@@ -1,0 +1,17 @@
+---
+title: "Coding in Base R"
+format: html
+editor: visual
+---
+
+Powell Braddock
+
+September 3, 2025
+
+ST 558 - Homework 2
+
+# Task 1
+
+# Task 2
+
+# Task 3
