@@ -12,6 +12,112 @@ ST 558 - Homework 2
 
 # Task 1
 
+In the first task, we are looking at twenty patient's blood pressure before and after medical treatment. We begin by creating two vectors: pre and post, and assigning "names" in the form of subject numbers to each observation.
+
+```{r}
+pre <- c(120, 151, 125, 126, 115, 132, 132, 129, 134, 139, 127, 122, 127, 135, 133, 128, 147, 138, 140, 132)
+
+names(pre) <- paste("Subject", 1:20, sep="_")
+pre
+
+post <- c(127, 145, 135, 122, 115, 122, 123, 126, 126, 129, 132, 146, 120, 114, 121, 120, 128, 120, 133, 115)
+
+names(post) <- paste("Subject", 1:20, sep="_")
+post
+```
+
+Now, we can explore the difference between the blood pressure before and after the treatment.
+
+```{r}
+diff <- pre - post
+diff
+```
+
+The mean of the difference found was 5.65 blood pressure points.
+
+```{r}
+mean(diff)
+```
+
+The which() function below shows which patients had a positive difference from treatment in blood pressure.
+
+```{r}
+which(diff > 0)
+```
+
+For each of those patients, the diff\[diff\>0\] function shows the difference in blood pressure for each subject.
+
+```{r}
+diff[diff > 0]
+```
+
+The mean of these differences was 10.6 blood pressure points.
+
+```{r}
+mean(diff[diff>0])
+```
+
 # Task 2
 
+Now, we can create a data frame with the information gathered in the task prior.
+
+```{r}
+patient <- paste("Subject", 1:20, sep="_")
+pre_bp <- pre
+post_bp <- post
+diff_bp <- diff
+
+df <- data.frame(patient, pre_bp, post_bp, diff_bp)
+df
+```
+
+Now we can extract the patients with a higher blood pressure than before treatment.
+
+```{r}
+neg <- df[df$diff_bp<0,]
+neg
+```
+
+Here, we are adding a column that returns TRUE if the patient's post-treatment blood pressure was less than 120 and FALSE if the patient's post-treatment blood pressure was more than 120.
+
+```{r}
+df$low_bp <- df$post_bp < 120
+knitr::kable(df)
+```
+
 # Task 3
+
+In this third and final task, we want to see the untreated (placebo) group. This group only has 10 subjects and we can create a data frame similar to the one created before.
+
+```{r}
+patient <- paste("Subject", 1:10, sep="_")
+placebo_pre <- c(138, 135, 147, 117, 152, 134, 114, 121, 131, 130)
+placebo_post <- c(105, 136, 123, 130, 134, 143, 135, 139, 120, 124)
+names(placebo_pre) <- paste("Subject", 1:10, sep="_")
+names(placebo_post) <- paste("Subject", 1:10, sep="_")
+placebo_diff <- placebo_pre - placebo_post
+placebo_df <- data.frame(patient, placebo_pre, placebo_post, placebo_diff)
+placebo_df$placebo_low_bp <- placebo_df$placebo_post < 120
+placebo_df
+```
+
+Now, we can combine these data frames (treatment and placebo) into a list. There are three ways highlighted to show how to access the first list element:
+
+-   indexing with brackets
+
+-   extracting the name of the element with \$
+
+-   using the head() function in combination with indexing with brackets
+
+```{r}
+combined_list <- list(treatment = df, placebo = placebo_df)
+combined_list[1]
+combined_list$treatment
+head(combined_list[1])
+```
+
+Now, we can access the pre-treatment placebo column of the placebo data frame within the combined_list.
+
+```{r}
+combined_list$placebo$placebo_pre
+```
